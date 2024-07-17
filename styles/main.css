@@ -1,0 +1,243 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f4f8;
+}
+
+button {
+  background-color: #28a745; /* Complementary color to the logo */
+  color: white;
+  border: none;
+  padding: 8px 16px; /* Smaller padding for smaller buttons */
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.button-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+/* Table Container */
+.table-container {
+  width: calc(100% - 40px); /* Adjusted for left and right margins */
+  overflow-y: auto;
+  height: calc(100vh - 50px); /* Adjusted to account for the footer and margins */
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  /* top | left and right | bottom */
+  margin: 0.5em auto 4.5em;
+  background-color: white;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #001f3f;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+tr:nth-child(even) {
+  background-color: #f0f8ff;
+}
+
+tr:hover {
+  background-color: #d1ecf1;
+}
+
+td {
+  transition: background-color 0.3s;
+}
+
+/* Spinner Overlay */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensuring the spinner overlay is on top */
+  visibility: hidden;
+}
+
+.spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #007bff;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 8px;
+  position: relative;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #00e600, #004d00);
+  color: white;
+  padding: 10px 20px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  margin: 0;
+}
+.modal-header img {
+  height: 40px;
+  width: 40px;
+}
+.modal-header h2 {
+  margin: 0;
+  flex-grow: 1;
+  text-align: center;
+}
+.close {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover,
+.close:focus {
+  color: #ccc;
+  text-decoration: none;
+}
+.modal-body {
+  padding: 20px;
+}
+.button-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+.component-list {
+  list-style: none;
+  padding: 0;
+}
+.component-list li {
+  background: #eee;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.component-list .formula {
+  display: none;
+  background: #f9f9f9;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 4px;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* Custom styles for file input */
+.file-input-wrapper {
+  display: flex;
+  align-items: center;
+}
+input[type="file"] {
+  color: transparent; /* Hide the text "No file chosen" */
+  background-color: #007bff; /* Button color */
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  position: relative;
+  width: 130px; /* Adjust the width as needed */
+}
+input[type="file"]::before {
+  content: 'Choose Files'; /* Custom button text */
+  color: white;
+  background-color: #007bff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto; /* Ensure the button text fits within the button */
+  text-align: center; /* Center the text */
+}
+input[type="file"]::-webkit-file-upload-button {
+  visibility: hidden; /* Hide the default button */
+}
+.file-names {
+  font-size: 14px;
+  color: #333;
+}
+
+@media print {
+  .table-container {
+    margin-top: 20px;
+    overflow: visible !important;
+    height: auto !important;
+  }
+}
+
+#log {
+  display: none;
+  margin: 10px 5px;
+  border: 1px solid #355e3b;
+  padding: 10px;
+  background-color: #e0ede2;
+}
