@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rleationship Profitability</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="spinnerOverlay" class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+    <div id="chartContainer">
+    </div>
+    <div id="resultsTableContainer" class="table-container"></div> <!-- Container for results table -->
+    <input type="checkbox" id="log-toggle"> Show Log
+    <div id="log"></div>
+    <div id="configModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="../JS_box.png" alt="Logo">
+                <h2 id="modalTitle"></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="file-input-wrapper">
+                    <input type="file" id="csvPipe" accept=".csv" multiple>
+                    <span id="fileNames" class="file-names">No file chosen</span>
+                </div>
+                <button id="run">
+                    Run
+                </button>
+                <h5>Version <span id="modalVersion"></span></h5>
+                <h4>Components</h4>
+                <ul class="component-list" id="componentList"></ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.buildConfig = {
+            libraries: ['organization', 'financial', 'https://bankersiq.com/api/trates/'],
+            title: 'Customer profitability',
+            version: '1.0.0',
+            presentation: {
+                columns: [
+                    { header: 'ID', key: 'ID', type: 'integer' },
+                    { header: 'Principal', key: 'principal', type: 'currency' },
+                    { header: 'Balance', key: 'balance', type: 'currency' },
+                    { header: 'Branch', key: 'branch', type: 'category' },
+                    { header: 'Result', key: 'result', type: 'float' }
+                ],
+                primary_key: 'ID',
+                sort: { key: 'result', order: 'desc' },
+                charts: [  // The key to group by for charting and Label for the chart
+                    { key: 'branch', label: 'Volume by Branch' },
+                ]
+            },
+            components: [
+                {
+                    id: 'loans',
+                    formula: '((annualRate - trates:12)  * averagePrincipal - originationExpense - servicingExpense) * (1 - taxRate) - loanLossReserve',
+                    pipeIDs: ['loan', 'lending', 'line']
+                },
+                {
+                    id: 'checking',
+                    formula: '((chargesIncome - interestExpense - deposits * depositUnitCost) * 12 + balance * (1 - ddaReserveRequired) * marginTarget - fraudLoss - ddaExpense) * (1-taxRate)',
+                    pipeIDs: ['check', 'dda']
+                },
+                {
+                    id: 'savings',
+                    formula: '(charges - interestExpense - (deposits / lifeInMonths * depositUnitCost / 2) + (withdrawals / lifeInMonths * withdrawalUnitCost) * 12 + balance * marginTarget - fraudLoss - savingsAnnualExpense) * (1-taxRate)',
+                    pipeIDs: ['sav']
+                },
+                {
+                    id: 'certificate',
+                    formula: '((trates: termInMonths - rate) * balance - CDExpense) * (1-taxRate)',
+                    pipeIDs: ['certificate', 'certificate', 'CD', 'COD']
+                }
+            ]
+        };
+    </script>
+    <script src="../core/groove.js"></script>
+    <script src="../core/loadLibraries.js"></script>
+    <script src="../organization/translator.js"></script>
+    <script src="../core/main.js"></script>
+</body>
+</html>
