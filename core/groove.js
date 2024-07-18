@@ -78,10 +78,9 @@ async function readCSVInChunks(file, callback) {
         rows.forEach(row => {
             if (row.trim() !== '') {
                 const columns = row.split(',');
-                csvData.push({
-                    id: parseInt(columns[0], 10),
-                    name: columns[1].replace(/['"]/g, '').trim()
-                });
+                const id = columns[0].replace(/['"]/g, '').trim();
+                const name = columns[1].replace(/['"]/g, '').trim();
+                csvData.push({ id, name });
             }
         });
         offset += CHUNK_SIZE;
@@ -105,7 +104,7 @@ function readFileChunk(file, offset, chunkSize) {
 }
 
 function processCSV(csvData) {
-    const table = document.getElementById('data-table');
+    const table = document.getElementById('result-table');
     const rowsInTable = table.getElementsByTagName('tr');
 
     for (let row of rowsInTable) {
@@ -113,12 +112,14 @@ function processCSV(csvData) {
         if (cells.length > 0) {
             const cell = cells[0];
             const cellText = cell.textContent;
-            const match = cellText.match(/^(\d+)/);
-            if (match) {
-                const tableId = parseInt(match[1], 10);
+            const numericMatch = cellText.match(/^(\d+)/);
+            const stringMatch = cellText.match(/^([A-Za-z\s]+)/);
+            const tableId = numericMatch ? numericMatch[1] : (stringMatch ? stringMatch[1].trim() : null);
+
+            if (tableId) {
                 const csvRow = csvData.find(item => item.id === tableId);
                 if (csvRow) {
-                    const remainingText = cellText.replace(/^\d+/, '');
+                    const remainingText = cellText.replace(/^[\dA-Za-z\s]+/, '');
                     cell.textContent = csvRow.name + remainingText;
                 } else {
                     logCombineEntry(`${cellText} unmatched`);
