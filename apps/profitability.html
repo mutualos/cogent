@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rleationship Profitability</title>
+    <title>Relationship Profitability</title>
     <link rel="stylesheet" href="../styles/main.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -45,10 +45,10 @@
             presentation: {
                 columns: [
                     { header: 'ID', key: 'ID', type: 'integer' },
-                    { header: 'Principal', key: 'principal', type: 'currency' },
-                    { header: 'Balance', key: 'balance', type: 'currency' },
+                    { header: 'Principal', key: 'principal', type: 'USD' },
+                    { header: 'Balance', key: 'balance', type: 'USD' },
                     { header: 'Branch', key: 'branch', type: 'category' },
-                    { header: 'Result', key: 'result', type: 'float' }
+                    { header: 'Result', key: 'result', type: 'USD' }
                 ],
                 primary_key: 'ID',
                 sort: { key: 'result', order: 'desc' },
