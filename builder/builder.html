@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FI.js App Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="../JS_box.png" alt="JS Box Logo">
+            <h1>FI.js App Builder</h1>
+        </div>
+        <div class="tabs">
+            <div class="tab active" data-tab="brief">Brief</div>
+            <div class="tab" data-tab="components">Components</div>
+            <div class="tab" data-tab="presentation">Presentation</div>
+            <div class="tab" data-tab="charts">Charts</div>
+            <div class="tab" data-tab="save">Save</div>
+        </div>
+        <div id="brief" class="tab-content active">
+            <div class="panel-left">
+                <h3>Getting Started</h3>
+                <p>Welcome to the application building wizard which will take you through the build process in steps from left to right</p>
+                <p>First, let's design our brief which contains the basic information about your application build on the right.</p>
+            </div>
+            <div class="panel-right">
+                <h3>General info about App</h3>
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" placeholder="application name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" placeholder="example: presents quarterly bank retail sales"><br>
+                </div>
+                <div class="form-group">
+                    <label for="author">Author:</label>
+                    <input type="text" id="author" name="author" placeholder="name or alias of the designer">
+                </div>
+                <div class="form-group">
+                    <label for="version">Version:</label>
+                    <input type="text" id="version" name="version" placeholder="1.0" required>
+                </div>
+            </div>
+        </div>
+        <div id="presentation" class="tab-content">
+            <div class="panel-left">
+                <h3>Presentation</h3>
+                <p>Now, let's define the table output that best communicates our formula results to the application users</p>
+                <button class="btn" id="addColumnBtn">Add Column</button>
+                <span style="margin-top: 1em;"></span>
+                <div class="form-group">
+                    <label for="primaryKey">Primary Key:</label>
+                    <select id="primaryKey" class="form-control">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sortKey">Sort By:</label>
+                    <select id="sortKey" class="form-control">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sortOrder">Sort Order:</label>
+                    <select id="sortOrder" class="form-control">
+                        <option value="desc">Descending</option>
+                        <option value="asc">Ascending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="panel-right" id="columnsContainer">
+                <div class="column-card permanent-card">
+                    <table>
+                        <tr>
+                            <th>Result</th>
+                            <input type="hidden" name="header" value="Result">
+                            <input type="hidden" name="key" value="result">
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <label for="type">Type:</label>
+                                    <select name="type" class="form-control">
+                                        <option value="float">Float</option>
+                                        <option value="integer">Integer</option>
+                                        <option value="USD">USD</option>
+                                        <option value="currency">Currency</option>
+                                        <option value="percentage">Percentage</option>
+                                        <option value="upper">Upper</option>
+                                        <option value="category">Category</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="components" class="tab-content">
+            <div class="panel-left">
+                <div class="suggestion attribute" id="attributes">
+                    <h3>Attributes</h3>
+                </div>
+                <div class="suggestion function" id="functions">
+                    <h3>Functions</h3>
+                </div>
+                <div class="suggestion dictionary" id="dictionaries">
+                    <h3>Dictionaries</h3>
+                </div>
+                <div class="suggestion pipe" id="pipes">
+                    <h3>Pipes</h3>
+                </div>
+            </div>
+            <div class="panel-right">
+                <div id="editor-container">
+                    <div contenteditable="true" id="editor" spellcheck="false"></div>
+                </div>
+            </div>
+        </div>
+        <div id="charts" class="tab-content">
+            <div class="panel-left">
+                <button class="btn" id="addChartBtn">Add Chart</button>
+            </div>
+            <div class="panel-right" id="chartsContainer">
+                <!-- Chart cards will be added here dynamically -->
+            </div>
+        </div>
+        <div id="save" class="tab-content">
+            <div style="margin-left: 10px;">
+                <button id="saveButton">
+                    <img src="../JS_box.png" class="button-icon">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.editorConfig = {
+            libraries: ['organization', 'financial', 'api'],
+        };
+    </script>
+    <script src="appBuilder.js"></script>
+</body>
+</html>
