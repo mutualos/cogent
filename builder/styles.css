@@ -1,0 +1,332 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.header img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+.header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
+}
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.3s;
+}
+.tab:hover {
+    background-color: #e9ecef;
+}
+.tab.active {
+    border: 1px solid #ccc;
+    border-bottom: 2px solid white;
+    background-color: #f9f9f9;
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: flex;
+}
+.panel-left {
+    width: 30%;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+.panel-right {
+    width: 70%;
+    padding: 20px;
+    background-color: #ffffff;
+    flex-wrap: wrap;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Ensures inputs fit within the table cells */
+}
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+.btn:hover {
+    background-color: #0056b3;
+}
+.table-container {
+    width: calc(100% - 40px);
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin: 0.5em auto 4.5em;
+    background-color: white;
+}
+.column-card {
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    background-color: #f9f9f9;
+    position: relative;
+    display: inline-block; /* Ensures horizontal layout */
+    vertical-align: top; /* Aligns cards to the top */
+    width: 200px; /* Sets a fixed width for column cards */
+}
+.column-card h4 {
+    margin-top: 0;
+}
+.column-card .remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.column-card .remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.chart-card {
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    background-color: #f9f9f9;
+    position: relative;
+    display: inline-block; /* Ensures horizontal layout */
+    vertical-align: top; /* Aligns cards to the top */
+    width: 200px; /* Sets a fixed width for chart cards */
+}
+.chart-card .remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.chart-card .bar-icon {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    margin: 10px 0;
+}
+.chart-card .bar-icon:before,
+.chart-card .bar-icon:after,
+.chart-card .bar-icon .bar {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: #007bff;
+}
+.chart-card .bar-icon:before {
+    height: 20px;
+    width: 8px;
+    left: 3px;
+    bottom: 0;
+}
+.chart-card .bar-icon:after {
+    height: 12px;
+    width: 8px;
+    left: 15px;
+    bottom: 0;
+}
+.chart-card .bar-icon .bar {
+    height: 16px;
+    width: 8px;
+    left: 25px;
+    bottom: 0;
+}
+th {
+    background-color: #001f3f;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+#editor-container {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+#editor {
+    width: 100%;
+    height: calc(100vh - 90px);
+    /* border: 1px solid #3c3c3c; */
+    font-size: 16px;
+    font-family: monospace;
+    white-space: pre-wrap; /* Allow word wrap */
+    overflow: auto;
+    outline: none;
+    background-color: #1e1e1e;
+    color: #dcdcdc;
+    border-radius: 5px;
+}
+
+.keyword {
+    color: #569cd6;
+    font-weight: bold;
+}
+
+.function {
+    color: #a1caa7;
+}
+
+.attribute {
+    color: #ce9178;
+}
+
+.dictionaries {
+    color: #9cdcfe;
+}
+
+.pipe {
+    color: #ffc914;
+}
+
+.suggestion {
+    margin-bottom: 10px;
+}
+
+.suggestion h3 {
+    margin: 0 0 5px 0;
+}
+
+.suggestion-item {
+    padding: 5px;
+    cursor: pointer;
+    background: #3c3c3c;
+    border: 1px solid #3c3c3c;
+    margin-bottom: 3px;
+    transition: background 0.3s ease;
+}
+
+.suggestion-item:hover {
+    background: #5c5c5c;
+}
+
+.suggestion-item.function {
+    color: #a1caa7;
+}
+
+.suggestion-item.attribute {
+    color: #9cdcfe;
+}
+
+.suggestion-item.dictionaries {
+    color: #9cdcfe;
+}
+
+.suggestion-item.pipe {
+    color: 	#ffc914; /* Example color for pipe items */
+}
+
+.value {
+    color: #da70d6; /* Example color for values */
+}
+
+.pipe_category {
+    margin: 10px 0 5px 0;
+    text-transform: uppercase;
+}
+
+.button-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+
+/* CSS for placeholders */
+::placeholder {
+    color: #888;
+    opacity: 1;
+    font-style: italic;
+}
+input:-moz-placeholder {
+    color: #888;
+    opacity: 1;
+    font-style: italic;
+}
+input:-ms-input-placeholder {
+    color: #888;
+    opacity: 1;
+    font-style: italic;
+}
+input::-ms-input-placeholder {
+    color: #888;
+    opacity: 1;
+    font-style: italic;
+}
+input::placeholder {
+    color: #888;
+    opacity: 1;
+    font-style: italic;
+}
