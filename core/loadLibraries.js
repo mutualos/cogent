@@ -63,6 +63,11 @@ function loadLibraries(libraries, finalCallback) {
     const totalLibraries = libraries.length;
     window.libraries = {};
 
+    if (totalLibraries === 0) {
+        finalCallback(window.libraries);
+        return;
+    }
+
     libraries.forEach(library => {
         loadLibrary(library, (error) => {
             if (!error) {
@@ -78,7 +83,7 @@ function loadLibraries(libraries, finalCallback) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('starting libraries load')
+    console.log('starting libraries load');
     if (window.buildConfig && window.buildConfig.libraries) {
         loadLibraries(window.buildConfig.libraries, (loadedLibraries) => {
             const conflicts = detectConflicts(loadedLibraries);
