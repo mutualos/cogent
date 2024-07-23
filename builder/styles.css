@@ -148,13 +148,13 @@ body {
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    padding: 20px;
-    margin: 10px;
+    padding: 10px;
+    margin: 5px;
     background-color: #f9f9f9;
     position: relative;
     display: inline-block; /* Ensures horizontal layout */
     vertical-align: top; /* Aligns cards to the top */
-    width: 200px; /* Sets a fixed width for chart cards */
+    width: 180px; /* Sets a fixed width for chart cards */
 }
 .chart-card .remove-btn {
     position: absolute;
