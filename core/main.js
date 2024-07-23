@@ -217,14 +217,15 @@ function processFormula(dataLines, headers, pipeFormula, pipeID, libraries) {
 }
 
 function displayResults(results) {
-    console.log('results', results)
+    console.log('results', results);
     const tableContainer = document.getElementById('resultsTableContainer');
     tableContainer.innerHTML = ''; // Clear previous results
 
     const table = document.createElement('table');
-    table.setAttribute("id","result-table");
+    table.setAttribute("id", "result-table");
     const thead = document.createElement('thead');
     const tbody = document.createElement('tbody');
+
     const headerRow = document.createElement('tr');
     const columns = window.buildConfig.presentation.columns;
     const primaryKey = window.buildConfig.presentation.primary_key;
@@ -235,10 +236,23 @@ function displayResults(results) {
     columns.forEach(column => {
         const th = document.createElement('th');
         if (column.key == primaryKey) {
-            const buttonElement = document.createElement('button');
-            buttonElement.id = 'mashup-button';
-            buttonElement.textContent = column.header;
-            buttonElement.addEventListener('click', () => {
+            const containerDiv = document.createElement('div');
+            containerDiv.style.display = 'flex';
+            containerDiv.style.alignItems = 'center';
+
+            const sortButton = document.createElement('button');
+            sortButton.classList.add('reSort-button');
+            sortButton.textContent = '⇅'; // Toggle sort symbol
+            sortButton.addEventListener('click', () => {
+                toggleSortOrder();
+                displayResults(results);
+            });
+            th.appendChild(sortButton);
+
+            const mashupButton = document.createElement('button');
+            mashupButton.id = 'mashup-button';
+            mashupButton.textContent = column.header;
+            mashupButton.addEventListener('click', () => {
                 const fileInput = document.createElement('input');
                 fileInput.type = 'file';
                 fileInput.accept = '.csv';
@@ -248,7 +262,9 @@ function displayResults(results) {
                 fileInput.click();
             });
 
-            th.appendChild(buttonElement);
+            containerDiv.appendChild(sortButton);
+            containerDiv.appendChild(mashupButton);
+            th.appendChild(containerDiv);
         } else {
             th.textContent = column.header;
         }
@@ -311,7 +327,7 @@ function displayResults(results) {
                 value = '';
             } else {
                 switch (column.type) {
-                    case 'integer': 
+                    case 'integer':
                         value = parseInt(value, 10);
                         if (isNaN(value)) value = 0;
                         break;
@@ -351,16 +367,16 @@ function displayResults(results) {
                         if (translations[column.key] && value in translations[column.key]) {
                             value = translations[column.key][value];
                         } else {
-                            logCombineEntry(`cannot find a ${column.key} translation for ${value}`);
+                            console.log(`cannot find a ${column.key} translation for ${value}`);
                             value = value;
                         }
                         break;
                     default:
-                	if (!isNaN(value)) {  //fallback - display numbers as float
-                        value = parseFloat(value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                    } else {
-                        value = value;
-                    }
+                        if (!isNaN(value)) {  //fallback - display numbers as float
+                            value = parseFloat(value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        } else {
+                            value = value;
+                        }
                 }
             }
 
@@ -396,7 +412,7 @@ function displayResults(results) {
                 let key = chartConfig.key;
                 if (chartConfig.key === 'count') key = primaryKey;
                 let chartValue = result[key];
-                if (key in translations &&  chartValue in translations[key]) {
+                if (translations[key] && translations[key][chartValue]) {
                     chartValue = translations[key][chartValue];
                 }
                 // extra measure to combine chart values when necessary
@@ -410,7 +426,7 @@ function displayResults(results) {
             });
             const chartLabels = Object.keys(chartResults);
             const chartData = Object.values(chartResults);
-            
+
             // Generate random colors for the chart
             const backgroundColors = chartLabels.map(() => `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.2)`);
             const borderColors = chartLabels.map(() => `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`);
@@ -438,6 +454,11 @@ function displayResults(results) {
             });
         });
     }
+}
+
+function toggleSortOrder() {
+    const sortConfig = window.buildConfig.presentation.sort;
+    sortConfig.order = sortConfig.order === 'asc' ? 'desc' : 'asc';
 }
 
 function showSpinner() {
