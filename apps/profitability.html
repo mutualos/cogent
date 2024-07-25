@@ -59,7 +59,7 @@
             components: [
                 {
                     id: 'loans',
-                    formula: '((annualRate - trates:12)  * averagePrincipal - originationExpense - servicingExpense) * (1 - taxRate) - loanLossReserve',
+                    formula: '((annualRate - trates:remainingMonths)  * averagePrincipal - originationExpense - servicingExpense) * (1 - taxRate) - loanLossReserve',
                     pipeIDs: ['loan', 'lending', 'line']
                 },
                 {
