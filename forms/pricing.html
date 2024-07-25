@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>FI.js Form - Loan Pricing</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+        <style>
+            body {
+                -webkit-user-select: none; /* Disable text selection */
+                -webkit-touch-callout: none; /* Disable callout, copy */
+            }
+            
+            .dashboard-item {
+                text-align: center;
+                padding: 15px;
+                background-color: var(--bs-light); /* Light background color from Bootstrap */
+                color: var(--bs-dark); /* Text color for light mode */
+                border-radius: 8px;
+            }
+            
+            .dashboard-item-number i {
+                font-size: 24px; /* Adjust the icon size */
+                color: var(--bs-success); /* Use a Bootstrap variable for the icon color */
+            }
+            
+            @media (prefers-color-scheme: dark) {
+                .dashboard-item {
+                    background-color: var(--bs-dark); /* Dark background color from Bootstrap */
+                    color: var(--bs-light); /* Text color for dark mode */
+                }
+            }
+            
+            @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); } /* Start from no shadow */
+                70% { box-shadow: 0 0 10px 10px rgba(57, 255, 20, 0); } /* Expand shadow with fade-out */
+                100% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0); } /* End with no shadow */
+            }
+            
+            .progress-marker {
+                position: absolute;
+                top: 0;
+                height: 100%;
+                border-left: 4px solid #fff;
+                z-index: 2;
+                animation: pulse 2s infinite;
+            }
+            
+            #spreadsheet input {
+                border: none;
+                background-color: transparent;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container" style="margin-top: 5rem">
+            <!-- Dashboard Section -->
+            <div class="dashboard mb-4 p-3 border rounded">
+                <h4 class="mb-3">Dashboard</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="dashboard-item">
+                            <h5>Annual Profit</h5>
+                            <p id="dashLeft" class="dashboard-item-number">
+                                <i class="hourglass-icon" aria-hidden="true">&#x1F552;</i>
+                            </p>
+                        </div> 
+                    </div>
+                    <div class="col-md-4">
+                        <div class="dashboard-item">
+                            <h5>Performance Grade</h5>
+                            <p id="dashMid" class="dashboard-item-number">
+                                <i class="hourglass-icon" aria-hidden="true">&#x1F552;</i>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="dashboard-item">
+                            <h5>ROE</h5>
+                            <p id="dashRight" class="dashboard-item-number">
+                                <i class="hourglass-icon" aria-hidden="true">&#x1F552;</i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container my-4">
+                        <div class="progress" style="position: relative; height: 30px;">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Weak</div>
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Under</div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Best</div>
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Over</div>
+                            <!-- Marker Element -->
+                            <div class="progress-marker"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Navs -->
+            <ul class="nav nav-tabs" id="formsTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Loan Terms</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Options & Submit</button>
+                </li>
+            </ul>
+            <!-- Tab Content -->
+            <div class="tab-content" id="formContent">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                    <form class="p-3">
+                        <div class="mb-3">
+                            <select class="form-select" name="Type_select" id="Type_select" aria-label="Default select">
+                                <option value="" selected>Choose loan type...</option>
+                                <option value="Commercial">Commercial</option>
+                                <option value="Commercial Real Estate">Commercial Real Estate</option>
+                                <option value="Residential Real Estate">Residential Real Estate</option>
+                                <option value="Consumer">Consumer</option>
+                                <option value="Equipment">Equipment</option>
+                                <option value="Home Equity">Home Equity</option>
+                                <option value="Letter of Credit">Letter of Credit</option>
+                            </select>
+                        </div>
+                        <input type="hidden" name="type" id="type" value="" />
+                        <div class="mb-3">
+                            <label for="principal" class="form-label">Principal</label>
+                            <input type="number" class="form-control" name="principal" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="termMonths" class="form-label">Contractual Term</label>
+                            <input type="number" class="form-control" name="termMonths" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amortization" class="form-label">Amortization</label>
+                            <input type="number" class="form-control" name="amortization">
+                        </div>
+                        <div class="mb-3">
+                            <label for="annualRate" class="form-label">Interest Rate (%)</label>
+                            <input type="number" class="form-control percent-input" name="annualRate" required>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-success next-tab">Next</button>
+                </div>
+                <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                    <form class="p-3">
+                        <div class="mb-3">
+                            <label for="fees" class="form-label">Collected Fees</label>
+                            <input type="number" class="form-control" name="fees" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="reprice" class="form-label">Variable rate - months to reprice</label>
+                            <input type="number" class="form-control" name="reprice">
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="guarantee" id="noGuarantee" value="0" checked>
+                                <label class="form-check-label" for="noGuarantee">
+                                    No Guarantee
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="guarantee" id="personalGuarantee" value="1">
+                                <label class="form-check-label" for="personalGuarantee">
+                                    Personal Guarantee
+                                </label>
+                            </div>
+                        </div>
+                        <select class="form-select" name="LTV" size="3" aria-label="Size 3 select" required>
+                            <option value="0.60">greater than-equal to 60% Loan-to-Value</option>
+                            <option value="0.70">greater than-equal to 70% Loan-to-Value</option>
+                            <option selected value="0.80">80% Loan-to-Value</option>
+                            <option value="0.90">less than-equal to 90% Loan-to-Value</option>
+                            <option value="1">less than-equal to 100% Loan-to-Value</option>
+                            <option value="1.1">greater than 100% Loan-to-Value</option>
+                            <option value="0">unsecured</option>
+                        </select>
+                    </form>
+                    <button type="button" class="btn btn-secondary prev-tab">Back</button>
+                    <button id="submitAll" type="button" class="btn btn-success">Submit</button>
+                </div>
+                <!-- Review & Submit Tab -->
+                <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                    <form class="p-3">
+                        <p>Review your information...</p>
+                        
+                    </form>
+                    <button type="button" class="btn btn-secondary prev-tab">Back</button>
+        
+                <!-- Presenter Tab -->
+                <div class="tab-pane fade" id="presenter_form" role="tabpanel" aria-labelledby="presenter-tab">
+                    <form class="p-3">
+                        <div id="presenter_div"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+         window.buildConfig = {
+            libraries: ['organization', 'financial', 'https://bankersiq.com/api/trates/', 'fiDashboard'],
+            version: '1.0.0',
+            presentation: {
+                columns: [
+                    { header: 'Result', key: 'result', type: 'float' }
+                ]
+            },
+            components: [
+                {
+                    id: 'loans',
+                    formula: '((annualRate * .01 - trates:termMonths) * averagePrincipal + fees - originationExpense - servicingExpense) * (1 - taxRate) - loanLossReserve',
+                },
+            ]
+        };
+
+        // Thinking about configuring buildConfig.presentation dashboard and forms.
+        // Let's complete the Grade -- this will need to be much more standardized
+        function gradeResult(result, formData, libraries) {
+            const averagePrincipal = libraries.functions.averagePrincipal.implementation(formData.principal, formData.annualRate, formData.termMonths, formData.amortization);
+            const [midValue, chartValue] = libraries.functions.gradeROE.implementation(result, averagePrincipal, libraries.attributes.capitalTarget.value, libraries.attributes.hurdleRate.value);
+            const marker = chartValue /  libraries.attributes.hurdleRate.value * 75; //75 represents the visual hurdle
+            console.log ('marker:', chartValue, libraries.attributes.hurdleRate.value);
+            updateMarkerPosition(marker);
+            document.querySelector('#dashMid').innerHTML = midValue;
+            document.querySelector('#dashRight').innerHTML = libraries.functions.returnOnEquity.implementation(result, averagePrincipal, libraries.attributes.capitalTarget.value) + '%';
+        };
+
+        function updateMarkerPosition(marker) {
+            marker = marker < 1 ? marker * 100 : marker; 
+            marker = Math.max(0, Math.min(100, marker));
+            // Convert the marker value to a percentage of the total width
+            const markerPositionPercent = marker;
+        
+            // Find the marker element and update its position
+            const markerElement = document.querySelector('.progress-marker');
+            markerElement.style.left = `${markerPositionPercent}%`;
+        }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            const nextButtons = document.querySelectorAll('.next-tab');
+            const prevButtons = document.querySelectorAll('.prev-tab');
+        
+            // Handle "Next" button clicks
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const activeTab = document.querySelector('.nav-tabs .nav-link.active');
+                    const nextTab = activeTab.parentNode.nextElementSibling.querySelector('.nav-link');
+                    if (nextTab) {
+                        new bootstrap.Tab(nextTab).show();
+                    }
+                });
+            });
+        
+            // Handle "Back" button clicks
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const activeTab = document.querySelector('.nav-tabs .nav-link.active');
+                    const prevTab = activeTab.parentNode.previousElementSibling.querySelector('.nav-link');
+                    if (prevTab) {
+                        new bootstrap.Tab(prevTab).show();
+                    }
+                });
+            });
+            // If you want to target the entire body for swipe gestures
+            const swipeTarget = document.body;
+            
+            // Alternatively, if you have a specific content wrapper, you could use:
+            // const swipeTarget = document.getElementById('contentWrapper');
+            
+            let startX;
+        
+            function onSwipeLeft() {
+                const activeTab = document.querySelector('.nav-tabs .nav-link.active');
+                const nextTab = activeTab.parentNode.nextElementSibling?.querySelector('.nav-link');
+                if (nextTab) {
+                    new bootstrap.Tab(nextTab).show();
+                }
+            }
+        
+            function onSwipeRight() {
+                const activeTab = document.querySelector('.nav-tabs .nav-link.active');
+                const prevTab = activeTab.parentNode.previousElementSibling?.querySelector('.nav-link');
+                if (prevTab) {
+                    new bootstrap.Tab(prevTab).show();
+                }
+            }
+        
+            swipeTarget.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+            }, { passive: true });
+        
+            swipeTarget.addEventListener('touchend', function(e) {
+                const endX = e.changedTouches[0].clientX;
+                if (startX - endX > 50) { // Swipe left
+                    onSwipeLeft();
+                } else if (startX - endX < -50) { // Swipe right
+                    onSwipeRight();
+                }
+            }, { passive: true });
+        });
+        
+        function openTabForInput(input) {
+            const tabPane = input.closest('.tab-pane');
+            if (!tabPane) return;
+        
+            const tabId = tabPane.id;
+            const correspondingTab = document.querySelector(`[data-bs-target="#${tabId}"]`);
+            if (correspondingTab) {
+                new bootstrap.Tab(correspondingTab).show();
+            }
+        }
+
+        function showError(input, isRequired, isValueMissing, isPercentInput, isValidPercent) {
+            // Remove existing error messages if any
+            const existingErrorMessage = input.nextElementSibling;
+            if (existingErrorMessage && existingErrorMessage.classList.contains('error-message')) {
+                input.parentNode.removeChild(existingErrorMessage);
+            }
+        
+            let errorMessageText = "Please enter a valid number.";
+            if (isRequired && isValueMissing) {
+                errorMessageText = "This field is required.";
+            } else if (isPercentInput && !isValidPercent) {
+                errorMessageText = "Please enter a valid percent (0-100).";
+            }
+        
+            const errorMessage = document.createElement('div');
+            errorMessage.innerText = errorMessageText;
+            errorMessage.style.color = "red";
+            errorMessage.classList.add('error-message');
+            input.parentNode.insertBefore(errorMessage, input.nextSibling);
+        
+            // Optionally, focus the first invalid input and open its tab
+            input.focus();
+            openTabForInput(input);
+        }
+
+        const submitAllButton = document.getElementById('submitAll');
+        submitAllButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+            let isFormValid = true; // Assume form is valid at the start
+            let combinedFormData = {}; // Object to hold combined form data
+            document.querySelector('#type').value = document.querySelector('#Type_select').value;
+            document.querySelector('#Type_select').disabled = true;
+            // Select only forms within the #formContent div
+            const forms = document.querySelectorAll('#formContent form');
+            
+        
+            forms.forEach(form => {
+                // Iterate over each input within each form for validation
+                const inputs = form.querySelectorAll('input[type="number"], .percent-input');
+                inputs.forEach(input => {
+                    // Initial validation setup
+                    const value = input.value.trim();
+                    const isRequired = input.hasAttribute('required');
+                    const isValueMissing = value === '';
+                    const parsedValue = parseFloat(value);
+                    const isPercentInput = input.classList.contains('percent-input');
+                    const isValidPercent = !isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 100;
+        
+                    if ((isRequired && isValueMissing) || (!isValueMissing && isNaN(parsedValue)) || (isPercentInput && !isValidPercent)) {
+                        // Validation failed, show error message
+                        showError(input, isRequired, isValueMissing, isPercentInput, isValidPercent);
+                        isFormValid = false; // Mark form as invalid
+                    }
+                });
+        
+                if (isFormValid) {
+                    // Form is valid, proceed to aggregate form data
+                    const formData = new FormData(form);
+                    for (const [key, value] of formData.entries()) {
+                        combinedFormData[key] = value; // Aggregate data from all forms
+                    }
+                }
+            });
+        
+            // Proceed if all forms are valid
+            if (isFormValid) {
+                // All forms are valid, process the combined form data
+                processForm(combinedFormData);
+            }
+        });
+
+        function processForm(formData) {
+            const processedData = {};
+            for (let key in formData) {
+                if (formData.hasOwnProperty(key)) {
+                    let value = formData[key];
+
+                    // Check if the value is an empty string
+                    if (value === "") {
+                        processedData[key] = value;
+                        continue;
+                    }
+
+                    // Check if the value should be converted to an integer
+                    if (!isNaN(value) && Number.isInteger(parseFloat(value))) {
+                        processedData[key] = parseInt(value, 10);
+                    } 
+                    // Check if the value should be converted to a float
+                    else if (!isNaN(value) && !Number.isInteger(parseFloat(value))) {
+                        processedData[key] = parseFloat(value);
+                    } 
+                    // Keep the value as a string
+                    else {
+                        processedData[key] = value;
+                    }
+                }
+            }
+            console.log('Original form data: ', formData);
+            console.log('Processed form data: ', processedData);
+            const headers = Object.keys(processedData);
+            const translations = {};
+            for (const key in headers) {
+                if (headers.hasOwnProperty(key)) {
+                    const value = headers[key];
+                    translations[value] = value;
+                }
+            }
+            const formula = window.buildConfig.components[0].formula;
+            console.log('processedData', processedData);
+            console.log('formula', formula);
+            console.log('translations', translations);
+            const result = evalFormula(processedData, formula, translations, libraries);
+            console.log('result', result);
+            document.querySelector('#dashLeft').innerHTML = result.toFixed(2);
+            gradeResult(result, formData, libraries);
+        }
+    </script>
+    <script src="../core/loadLibraries.js"></script>
+    <script src="../organization/translator.js"></script>
+    <script src="../core/main.js"></script>
+</body>
+</html>
