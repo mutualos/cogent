@@ -511,3 +511,22 @@ function translateHeader(pipeID, csvHeader) {
     }
     return csvHeader;  // Return original if no translation found
 }
+
+function logCombineEntry(entry, unique = false) {
+    if (!unique && log[entry]) {
+        console.warn(entry);
+        log[entry]++;
+    } else {
+        log[entry] = 1;
+    }
+}
+
+function updateLog() {
+    const logDiv = document.getElementById('log');
+    logDiv.innerHTML = '';
+    for (const entry in log) {
+        const logEntry = document.createElement('div');
+        logEntry.textContent = `${entry}: ${log[entry]} instance(s)`;
+        logDiv.appendChild(logEntry);
+    }
+}
