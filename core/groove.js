@@ -130,25 +130,6 @@ function processCSV(csvData) {
     hideSpinner();
 }
 
-function logCombineEntry(entry) {
-    console.warn(entry);
-    if (log[entry]) {
-        log[entry]++;
-    } else {
-        log[entry] = 1;
-    }
-}
-
-function updateLog() {
-    const logDiv = document.getElementById('log');
-    logDiv.innerHTML = '';
-    for (const entry in log) {
-        const logEntry = document.createElement('div');
-        logEntry.textContent = `${entry}: ${log[entry]} instance(s)`;
-        logDiv.appendChild(logEntry);
-    }
-}
-
 function toggleLogVisibility() {
     const logDiv = document.getElementById('log');
     if (document.getElementById('log-toggle').checked) {
