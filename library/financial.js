@@ -172,6 +172,10 @@ const financial = {
                     const principalCostMax = libraries.dictionaries.principalCostMax.values[identifiedType];
                     const principalCostMin = principalCostMax / 10;
                     let expense = Math.max(principalCostMin, Math.min(principalCostMax, principal)) * originationFactor / Math.max(months, 60) * 12;
+                    if (libraries.attributes.organizationEfficiency && libraries.attributes.organizationEfficiency.value !== undefined) {
+                        const efficiencyAdjustmenmt =  libraries.attributes.organizationEfficiency.value / libraries.attributes.targetEfficiency.value;
+                        expense = efficiencyAdjustmenmt * expense;
+                    }
                     return expense.toFixed(2);
                 } else {
                     console.error(`type not found in libraries.dictionaries.loanTypeID.values:${type}.`);
@@ -184,6 +188,10 @@ const financial = {
                 if (libraries.attributes.loanServicingFactor.value) {
                     const months = maturityDate ? libraries.functions.remainingMonths.implementation(maturityDate) : termMonths;
                     let expense = principal * libraries.attributes.loanServicingFactor.value / months * 12;
+                    if (libraries.attributes.organizationEfficiency && libraries.attributes.organizationEfficiency.value !== undefined) {
+                        const efficiencyAdjustmenmt =  libraries.attributes.organizationEfficiency.value / libraries.attributes.targetEfficiency.value;
+                        expense = efficiencyAdjustmenmt * expense;
+                    }
                     return expense.toFixed(2);
                 } else {
                     console.log('libaries are missing loanServicingFactor see library docs');
@@ -298,6 +306,10 @@ const financial = {
         savingsAnnualExpense: {
             description: "The savings account annual operating costs",
             value: 28
+        },
+        targetEfficiency: {
+            description: "Banking industry target Efficiency Ratio. Efficiency Ratio is calculated by dividing an institution’s operating expenses by its total income and is therefore also referred to as an institution’s 'Cost to Income Ratio'",
+            value: 0.60
         }
     },
     dictionaries: {
