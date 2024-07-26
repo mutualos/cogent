@@ -19,6 +19,10 @@ const organization = {
         hurdleRate: {
             description: "lowest rate of return a project or investment must achieve acceptable",
             value: 0.18,
+        },
+        organizationEfficiency: {
+            description: "Organization's Efficiency Ratio which is calculated by dividing an institution’s operating expenses by its total income and is therefore also referred to as an institution’s 'Cost to Income Ratio'",
+            value: 0.85
         }
     },
     dictionaries: {
