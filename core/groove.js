@@ -1,7 +1,30 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Get the modal
-    var modal = document.getElementById("configModal");
-    var span = document.getElementsByClassName("close")[0];
+    var modal = document.getElementById("runModal");
+
+    // Render modal content
+    const modalContent = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="../JS_box.png" alt="Logo">
+                <h2 id="modalTitle"></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="file-input-wrapper">
+                    <input type="file" id="csvPipe" accept=".csv" multiple>
+                    <span id="fileNames" class="file-names">No file chosen</span>
+                </div>
+                <button id="run">
+                    Run
+                </button>
+                <h5>Version <span id="modalVersion"></span></h5>
+                <h4>Components</h4>
+                <ul class="component-list" id="componentList"></ul>
+            </div>
+        </div>
+    `;
+    modal.innerHTML = modalContent;
 
     // Set the modal title and version
     document.getElementById('modalTitle').textContent = window.buildConfig.title;
@@ -9,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Display component IDs and formulas in the modal
     var componentList = document.getElementById("componentList");
-    window.buildConfig.components.forEach(function(component) {
+    window.buildConfig.components.forEach(function (component) {
         var li = document.createElement("li");
         li.innerHTML = `
             ${component.id}
@@ -17,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
         componentList.appendChild(li);
 
-        li.addEventListener('click', function() {
+        li.addEventListener('click', function () {
             var formula = this.querySelector('.formula');
             if (formula.style.display === 'none' || formula.style.display === '') {
                 formula.style.display = 'block';
@@ -30,25 +53,28 @@ document.addEventListener('DOMContentLoaded', function () {
     // Show the modal onload
     modal.style.display = "block";
 
+    // Get the close button
+    var span = document.getElementsByClassName("close")[0];
+
     // Close the modal
-    span.onclick = function() {
+    span.onclick = function () {
         modal.style.display = "none";
     }
 
     // Close the modal when clicking outside of it
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
 
     // Close the modal when the run button is clicked
-    document.getElementById('run').addEventListener('click', function() {
+    document.getElementById('run').addEventListener('click', function () {
         modal.style.display = "none";
     });
 
     // Update file names when files are chosen
-    document.getElementById('csvPipe').addEventListener('change', function() {
+    document.getElementById('csvPipe').addEventListener('change', function () {
         var fileNames = Array.from(this.files).map(file => file.name).join(', ');
         document.getElementById('fileNames').textContent = fileNames || 'No file chosen';
     });
